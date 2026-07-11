@@ -1,0 +1,39 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04.07.2026 09:50:13
+// Design Name: 
+// Module Name: data_memory
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module data_memory(clk, reset, mem_write, mem_read, address, write_data, mem_data_out);
+    input clk, reset, mem_write, mem_read;
+    input [31:0] address;
+    input [31:0] write_data;
+    output [31:0] mem_data_out;
+    parameter depth = 256;
+    reg [31:0] d_memory [0:depth-1];
+    integer m;
+    always @(posedge clk or posedge reset) begin
+        if(reset) begin
+            for(m = 0; m < depth; m = m + 1)
+                d_memory[m] <= 32'b0;
+        end
+        else if(mem_write)
+            d_memory[address[31:2]] <= write_data;
+    end
+    assign mem_data_out = (mem_read) ? d_memory[address[31:2]] : 32'b0;
+endmodule
