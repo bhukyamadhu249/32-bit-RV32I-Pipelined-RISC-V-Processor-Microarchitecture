@@ -1,0 +1,96 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04.07.2026 00:50:31
+// Design Name: 
+// Module Name: control_unit
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module control_unit(instruction, branch, mem_read, mem_to_reg, aluop, mem_write, alu_src, reg_write);
+    input [6:0] instruction;
+    output reg branch;
+    output reg mem_read;
+    output reg mem_to_reg;
+    output reg mem_write;
+    output reg alu_src;
+    output reg reg_write;
+    output reg [1:0] aluop;
+    
+    localparam R_TYPE = 7'b0110011;
+    localparam I_TYPE = 7'b0010011;
+    localparam LOAD   = 7'b0000011;
+    localparam STORE  = 7'b0100011;
+    localparam BRANCH = 7'b1100011;
+    localparam LUI    = 7'b0110111;
+    localparam AUIPC  = 7'b0010111;
+    localparam JAL    = 7'b1101111;
+    localparam JALR   = 7'b1100111;
+    
+    always @(*) begin
+        case(instruction)
+            R_TYPE :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b00100001;
+                
+            LOAD :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b11110000;
+
+            STORE :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b10001000;
+
+            BRANCH :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b00000101;
+
+            I_TYPE :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b10100010;
+
+            LUI :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b10100000;
+
+            AUIPC :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b10100000;
+
+            JAL :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b00100000;
+
+            JALR :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b10100000;
+                
+            default :
+                {alu_src, mem_to_reg, reg_write,
+                 mem_read, mem_write, branch, aluop}
+                = 8'b00000000;
+        endcase
+    end
+endmodule
