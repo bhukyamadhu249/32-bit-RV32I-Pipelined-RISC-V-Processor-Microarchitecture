@@ -1,0 +1,59 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04.07.2026 01:33:49
+// Design Name: 
+// Module Name: alu_control
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module alu_control(aluop, fun7, fun3, control_out);
+    input fun7;
+    input [2:0] fun3;
+    input [1:0] aluop;
+    output reg [3:0] control_out;
+
+    always @(*) begin
+        case({aluop, fun7, fun3})
+            // LW, SW
+            6'b00_0_000 : control_out = 4'b0010;   // ADD
+            // BEQ
+            6'b01_0_000 : control_out = 4'b0110;   // SUB
+            // R-Type ADD
+            6'b10_0_000 : control_out = 4'b0010;
+            // R-Type SUB
+            6'b10_1_000 : control_out = 4'b0110;
+            // AND
+            6'b10_0_111 : control_out = 4'b0000;
+            // OR
+            6'b10_0_110 : control_out = 4'b0001;
+            // XOR
+            6'b10_0_100 : control_out = 4'b0011;
+            // SLL
+            6'b10_0_001 : control_out = 4'b0100;
+            // SRL
+            6'b10_0_101 : control_out = 4'b0101;
+            // SRA
+            6'b10_1_101 : control_out = 4'b0111;
+            // SLT
+            6'b10_0_010 : control_out = 4'b1000;
+            // SLTU
+            6'b10_0_011 : control_out = 4'b1001;
+//            // ADDI (I-Type ALU Instructions)
+//            6'b11_0_000 : control_out = 4'b0010;
+            default : control_out = 4'b0000;
+        endcase
+    end
+endmodule
