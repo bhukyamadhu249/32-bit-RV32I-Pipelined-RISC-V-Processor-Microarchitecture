@@ -1,0 +1,60 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04.07.2026 11:24:55
+// Design Name: 
+// Module Name: single_cycle_riscv_tb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module single_cycle_riscv_tb;
+
+    // Inputs
+    reg clk;
+    reg reset;
+
+    // Instantiate top module
+    single_cycle_riscv uut (
+        .clk(clk),
+        .reset(reset)
+    );
+
+    // Clock Generation
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    // Reset and Simulation Control
+    initial begin
+
+        // Apply reset
+        reset = 1;
+
+        // Hold reset for 20 ns
+        #20;
+
+        // Release reset
+        reset = 0;
+
+        // Run simulation for 200 ns
+        #200;
+
+        $finish;
+
+    end
+
+endmodule
