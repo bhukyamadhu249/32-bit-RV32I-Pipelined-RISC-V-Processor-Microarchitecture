@@ -1,0 +1,82 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 03.07.2026 22:40:19
+// Design Name: 
+// Module Name: instruction_memory
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module instruction_memory(read_address, instruction_out);
+    
+    input [31:0] read_address;
+    output [31:0] instruction_out;
+    parameter depth = 256;
+    reg [31:0] memory [0:depth-1];
+    integer i;
+
+    initial begin
+
+    
+    // I-Type Instructions
+
+    memory[0]  = 32'h00A00093;   // addi x1, x0, 10
+    memory[1]  = 32'h01400113;   // addi x2, x0, 20
+
+    // R-Type Arithmetic
+
+    memory[2]  = 32'h002081B3;   // add  x3, x1, x2
+    memory[3]  = 32'h40110233;   // sub  x4, x2, x1
+
+    // Logical Instructions
+
+    memory[4]  = 32'h0020F2B3;   // and  x5, x1, x2
+    memory[5]  = 32'h0020E333;   // or   x6, x1, x2
+    memory[6]  = 32'h0020C3B3;   // xor  x7, x1, x2
+
+    // Shift Instructions
+
+    memory[7]  = 32'h001114B3;   // sll  x9, x2, x1
+    memory[8]  = 32'h00115533;   // srl  x10, x2, x1
+    memory[9]  = 32'h401155B3;   // sra  x11, x2, x1
+
+    // Compare Instructions
+
+    memory[10] = 32'h0020A633;   // slt  x12, x1, x2
+    memory[11] = 32'h001136B3;   // sltu x13, x2, x1
+
+    // Memory Instructions
+
+    memory[12] = 32'h00302023;   // sw x3,0(x0)
+    memory[13] = 32'h00002703;   // lw x14,0(x0)
+
+    // Branch Instructions
+
+    memory[14] = 32'h00370463;   // beq x14,x3,+8
+    memory[15] = 32'h06400793;   // addi x15,x0,100 (should be skipped)
+    memory[16] = 32'h03700813;   // addi x16,x0,55
+
+    // NOPs -- no operations
+
+    memory[17] = 32'h00000013;
+    memory[18] = 32'h00000013;
+    memory[19] = 32'h00000013;
+    memory[20] = 32'h00000013;
+
+end
+    assign instruction_out = memory[read_address[31:2]];
+    
+endmodule
