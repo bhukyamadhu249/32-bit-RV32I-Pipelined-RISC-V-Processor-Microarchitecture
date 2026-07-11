@@ -1,0 +1,30 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04.07.2026 10:20:37
+// Design Name: 
+// Module Name: mem_to_reg_mux
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module mem_to_reg_mux(
+    input mem_to_reg,
+    input [31:0] alu_result,
+    input [31:0] mem_data_out,
+    output [31:0] write_back_data
+);
+assign write_back_data = (mem_to_reg) ? mem_data_out : alu_result;
+endmodule
