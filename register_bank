@@ -1,0 +1,43 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 03.07.2026 23:35:50
+// Design Name: 
+// Module Name: register_bank
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module register_bank(clk,reset, reg_write, rs1, rs2, rd, write_data, read_data1, read_data2);
+    input clk, reg_write, reset;
+    input [4:0] rs1, rs2, rd;
+    input [31:0] write_data;
+    output [31:0] read_data1, read_data2;
+    integer k;
+    reg [31:0] registers [0:31];
+    always @(posedge clk or posedge reset) begin
+        if(reset) begin
+            for(k=0;k<32; k = k+1) begin
+                registers[k] <= 32'b00;
+                end 
+        end
+        else if(reg_write && rd != 0) begin
+            registers[rd] <= write_data;
+            end 
+    end 
+    assign read_data1 = (rs1 == 0) ? 32'b0 : registers[rs1];
+    assign read_data2 = (rs2 == 0) ? 32'b0 : registers[rs2];
+    
+endmodule
